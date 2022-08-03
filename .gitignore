@@ -3,7 +3,6 @@ _site
 .jekyll-cache
 .jekyll-metadata
 vendor
-Gemfile.lock
 *.gem
 node_modules
 package-lock.json
