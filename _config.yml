@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-remote_theme: jekyll-theme-chirpy
+theme: jekyll-theme-chirpy
 timezone: Asia/Shanghai
 baseurl: ""
 # the subpath of your site, e.g. /blog
@@ -186,8 +186,6 @@ exclude:
   - '*.gemspec'
   - tools
   - README.md
-  - CHANGELOG.md
-  - LICENSE
   - gulpfile.js
   - node_modules
   - package*.json
