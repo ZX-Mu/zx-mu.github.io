@@ -22,7 +22,7 @@ source "https://rubygems.org"
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.
-# Official Plugins
+
 gemspec
 
 group :test do
@@ -42,6 +42,3 @@ gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 gem "webrick", "~> 1.7"
-
-# gem "jekyll-theme-chirpy", "~> 5.2", ">= 5.2.1"
-
