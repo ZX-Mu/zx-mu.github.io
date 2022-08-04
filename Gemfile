@@ -3,6 +3,9 @@ source 'https://gems.ruby-china.com'
 
 gemspec
 
+# gem "jekyll", "~> 4.2.2"
+# gem "github-pages", "~> 227", group: :jekyll_plugins
+
 group :test do
   gem "html-proofer", "~> 3.18"
 end
