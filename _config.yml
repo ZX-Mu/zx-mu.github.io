@@ -63,7 +63,7 @@ toc: true
 
 
 google_analytics:
-  id: G-9WW3HWB3YL       # fill in your Google Analytics ID
+  id: UA-244659510-1       # fill in your Google Analytics ID
   # Google Analytics pageviews report settings
   pv:
     proxy_endpoint:   # fill in the Google Analytics superProxy endpoint of Google App Engine
