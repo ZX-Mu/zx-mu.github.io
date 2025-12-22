@@ -1,0 +1,398 @@
+:root {
+  /* 🎨 核心配色：奶油暖色调 (High Aesthetic Palette) */
+  --vp-c-brand-1: #ff8e7a; /* 柔和珊瑚橘 */
+  --vp-c-brand-2: #ffb085;
+  --vp-c-brand-3: #ffd2a0;
+  
+  /* 背景色：极简奶油白 */
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-soft: #fffaf9;
+  --vp-c-bg-alt: #fff5f2;
+  
+  /* 文字颜色：深灰咖，比纯黑更高级 */
+  --vp-c-text-1: #3c3c3c;
+  --vp-c-text-2: #666666;
+
+  /* 装饰性变量 */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: linear-gradient(120deg, #ff8e7a 0%, #ffb085 100%);
+  --vp-home-hero-image-filter: drop-shadow(0 20px 50px rgba(255, 142, 122, 0.2));
+
+  /* 📏 布局优化 */
+  --vp-layout-max-width: 1440px;
+  --vp-sidebar-width: 272px;
+}
+
+/* 修复主体区域布局，防止内容溢出 */
+.VPContent {
+  overflow-x: hidden !important;
+}
+
+/* VPDoc 容器样式 */
+.VPDoc {
+  padding: 32px 24px !important;
+}
+
+/* 确保文档容器不会溢出 */
+.VPDoc .container {
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+.VPDoc .container .content {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* 带侧边栏时的布局调整 */
+@media (min-width: 960px) {
+  .VPDoc {
+    padding: 48px 32px !important;
+  }
+  
+  /* 确保内容区域不被侧边栏遮挡 */
+  .VPDoc.has-sidebar .container {
+    max-width: 100% !important;
+  }
+  
+  /* 增加主体区域和侧边栏之间的间距 */
+  .VPDoc.has-sidebar .content-container {
+    padding-left: 32px !important;
+  }
+  
+  /* 增加侧边栏左侧间距，使其与内容分开 */
+  .VPSidebar {
+    padding-left: 24px !important;
+  }
+  
+  /* 调整内容区域，使其远离侧边栏 */
+  .VPDoc.has-sidebar .content {
+    padding-right: 32px !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .VPDoc {
+    padding: 48px 64px !important;
+  }
+  
+  /* 在大屏幕上进一步增加间距 */
+  .VPDoc.has-sidebar .content-container {
+    padding-left: 48px !important;
+  }
+  
+  .VPDoc.has-sidebar .content {
+    padding-right: 48px !important;
+  }
+}
+
+.dark {
+  --vp-c-brand-1: #ffb3a7;
+  --vp-c-bg: #1a1a1a;
+  --vp-c-bg-soft: #242424;
+  --vp-c-bg-alt: #2a2a2a;
+}
+
+/* ✨ 布局美化：更宽阔的呼吸感 */
+.VPHome {
+  padding-bottom: 96px !important;
+}
+
+/* 🖼️ Hero 图片：灵动的悬浮感 */
+.VPImage.image-src {
+  border-radius: 32px; /* 放弃圆形，改用大圆角矩形，更现代 */
+  transform: rotate(-2deg);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 8px solid #fff;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+}
+
+.VPImage.image-src:hover {
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 0 30px 60px rgba(255, 142, 122, 0.15);
+}
+
+/* 🚀 按钮美化：Q弹交互 */
+.VPButton.brand {
+  border-radius: 14px !important;
+  padding: 0 24px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(255, 142, 122, 0.3) !important;
+}
+
+.VPButton.brand:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 142, 122, 0.4) !important;
+}
+
+.VPButton.alt {
+  border-radius: 14px !important;
+  background-color: var(--vp-c-bg-alt) !important;
+  border: 1px solid transparent !important;
+}
+
+/* 📦 特性卡片：毛玻璃与微交互 */
+.VPFeature {
+  border: 1px solid rgba(255, 142, 122, 0.1) !important;
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(10px);
+  border-radius: 24px !important;
+  padding: 32px !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-1) !important;
+  background: #fff !important;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(255, 142, 122, 0.1) !important;
+}
+
+.VPFeature .icon {
+  background-color: var(--vp-c-bg-alt) !important;
+  border-radius: 12px !important;
+  width: 48px !important;
+  height: 48px !important;
+  font-size: 24px !important;
+  margin-bottom: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 导航栏美化 */
+.VPNavBar {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,0,0,0.03) !important;
+  position: relative;
+  z-index: 10;
+}
+
+/* 确保导航栏边框延伸到整个宽度 */
+.VPNavBar::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(0,0,0,0.03);
+  z-index: 1;
+}
+
+/* 侧边栏美化 */
+.VPSidebar {
+  background-color: var(--vp-c-bg-soft) !important;
+  border-left: 1px solid rgba(0,0,0,0.03);
+  margin-top: -1px;
+}
+
+.VPSidebarItem.level-0 .text {
+  font-weight: 700 !important;
+  color: var(--vp-c-brand-1) !important;
+}
+
+/* 📄 文章列表美化：告别原始的点状列表 */
+.vp-doc > div > ul,
+.vp-doc > ul {
+  list-style: none !important;
+  padding-left: 0 !important;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px !important;
+}
+
+@media (max-width: 768px) {
+  .vp-doc > div > ul,
+  .vp-doc > ul {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.vp-doc > div > ul li,
+.vp-doc > ul li {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-width: 0; /* Prevent overflow in grid */
+}
+
+.vp-doc > div > ul li a,
+.vp-doc > ul li a {
+  display: block;
+  padding: 16px 20px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid rgba(255, 142, 122, 0.1);
+  border-radius: 12px;
+  text-decoration: none !important;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.vp-doc > div > ul li a::before,
+.vp-doc > ul li a::before {
+  content: "📖";
+  margin-right: 8px;
+  font-size: 1.1em;
+}
+
+.vp-doc > div > ul li a:hover,
+.vp-doc > ul li a:hover {
+  background: #fff;
+  border-color: var(--vp-c-brand-1);
+  transform: translateX(4px);
+  box-shadow: 4px 4px 15px rgba(255, 142, 122, 0.1);
+  color: var(--vp-c-brand-1) !important;
+}
+
+/* 针对 About 页面等不需要网格列表的特殊处理 */
+.vp-doc.about-page ul {
+  display: block;
+}
+
+/* 确保页面级组件不溢出 */
+.VPPage {
+  overflow-x: hidden !important;
+}
+
+/* 内容区域全局防溢出 */
+.vp-doc {
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ======================================
+   🎯 关于页面专属样式优化
+   ====================================== */
+
+/* 1️⃣ 完全隐藏分割线 */
+.vp-doc hr {
+    display: none !important;
+}
+
+/* 2️⃣ 通过上下间距保持视觉分隔 */
+.vp-doc h2 {
+    margin-top: 3rem !important;
+    padding-top: 1rem !important;
+}
+
+/* 3️⃣ 缩小关于页面整体字体 */
+.vp-doc {
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+}
+
+.vp-doc h1 {
+    font-size: 2rem !important; /* 32px */
+    margin-top: 0 !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.vp-doc h2 {
+    font-size: 1.4rem !important; /* 22.4px */
+    margin-bottom: 1rem !important;
+    color: var(--vp-c-text-1) !important;
+}
+
+.vp-doc h3 {
+    font-size: 1.15rem !important; /* 18.4px */
+    margin-top: 1.5rem !important;
+    margin-bottom: 0.6rem !important;
+    color: var(--vp-c-text-1) !important;
+}
+
+.vp-doc p {
+    font-size: 14px !important;
+    line-height: 1.8 !important;
+    margin: 0.8rem 0 !important;
+    color: var(--vp-c-text-2) !important; /* 统一为 #666666 */
+}
+
+/* 4️⃣ 统一文字颜色 */
+.vp-doc li {
+    color: var(--vp-c-text-2) !important;
+    font-size: 14px !important;
+    line-height: 1.7 !important;
+    margin: 0.4rem 0 !important;
+}
+
+.vp-doc strong {
+    color: var(--vp-c-text-1) !important;
+    font-weight: 600 !important;
+}
+
+/* 5️⃣ 列表样式缩小 */
+.vp-doc ul,
+.vp-doc ol {
+    padding-left: 1.5rem !important;
+    margin: 1rem 0 !important;
+}
+
+/* 6️⃣ 引用块样式优化 */
+.vp-doc blockquote {
+    font-size: 13.5px !important;
+    padding: 1rem 1.2rem !important;
+    margin: 1.2rem 0 !important;
+    background: var(--vp-c-bg-soft) !important;
+    border-left: 3px solid var(--vp-c-brand-1) !important;
+    border-radius: 6px !important;
+    color: var(--vp-c-text-2) !important;
+}
+
+.vp-doc blockquote p {
+    margin: 0.3rem 0 !important;
+}
+
+/* 7️⃣ 段落间距优化 */
+.vp-doc > * + * {
+    margin-top: 1rem !important;
+}
+
+.vp-doc h2 + p,
+.vp-doc h3 + p {
+    margin-top: 0.5rem !important;
+}
+
+/* 8️⃣ 代码块缩小（如果有） */
+.vp-doc code {
+    font-size: 13px !important;
+    padding: 2px 6px !important;
+    background: var(--vp-c-bg-soft) !important;
+    border-radius: 4px !important;
+}
+
+.vp-doc pre {
+    font-size: 13px !important;
+    padding: 1rem !important;
+    margin: 1rem 0 !important;
+}
+
+/* 9️⃣ 响应式：手机端再缩小一点 */
+@media (max-width: 768px) {
+    .vp-doc {
+        font-size: 13px !important;
+    }
+
+    .vp-doc h1 {
+        font-size: 1.75rem !important;
+    }
+
+    .vp-doc h2 {
+        font-size: 1.25rem !important;
+        margin-top: 2rem !important;
+    }
+
+    .vp-doc h3 {
+        font-size: 1.1rem !important;
+    }
+}
+
