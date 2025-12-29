@@ -87,10 +87,22 @@
 }
 
 .dark {
+  /* 🌑 核心配色：夜间模式优化 */
   --vp-c-brand-1: #ffb3a7;
-  --vp-c-bg: #1a1a1a;
-  --vp-c-bg-soft: #242424;
-  --vp-c-bg-alt: #2a2a2a;
+  --vp-c-brand-2: #ffcfb7;
+  
+  /* 背景色：深邃夜空灰 - 提高对比度 */
+  --vp-c-bg: #121212;
+  --vp-c-bg-soft: #1e1e1e;
+  --vp-c-bg-alt: #252525;
+
+  /* 文字颜色：提高可读性 */
+  --vp-c-text-1: #f0f0f0;
+  --vp-c-text-2: #a0a0a0;
+
+  /* 装饰性变量适配 */
+  --vp-home-hero-name-background: linear-gradient(120deg, #ffb3a7 0%, #ffcfb7 100%);
+  --vp-home-hero-image-filter: drop-shadow(0 20px 50px rgba(255, 179, 167, 0.15));
 }
 
 /* ✨ 布局美化：更宽阔的呼吸感 */
@@ -394,5 +406,82 @@
     .vp-doc h3 {
         font-size: 1.1rem !important;
     }
+}
+
+/* ======================================
+   🌑 深色模式专属组件优化
+   ====================================== */
+
+/* 1️⃣ 导航栏：深色毛玻璃 */
+.dark .VPNavBar {
+  background-color: rgba(18, 18, 18, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.dark .VPNavBar::after {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* 2️⃣ Hero 图片：去除白边，改为深色辉光 */
+.dark .VPImage.image-src {
+  border-color: #2a2a2a;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+.dark .VPImage.image-src:hover {
+  box-shadow: 0 30px 60px rgba(255, 179, 167, 0.1);
+}
+
+/* 3️⃣ 特性卡片：深色半透明 */
+.dark .VPFeature {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .VPFeature:hover {
+  background: #2a2a2a !important;
+  border-color: var(--vp-c-brand-1) !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3) !important;
+}
+
+.dark .VPFeature .icon {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* 4️⃣ 侧边栏与文档列表 */
+.dark .VPSidebar {
+  background-color: var(--vp-c-bg-soft) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dark .vp-doc > div > ul li a,
+.dark .vp-doc > ul li a {
+  background: #252525;
+  border-color: rgba(255, 255, 255, 0.05);
+  color: var(--vp-c-text-1);
+}
+
+.dark .vp-doc > div > ul li a:hover,
+.dark .vp-doc > ul li a:hover {
+  background: #333;
+  color: var(--vp-c-brand-1) !important;
+  border-color: var(--vp-c-brand-1);
+}
+
+/* 5️⃣ 关于页面文字适配 */
+.dark .vp-doc h2,
+.dark .vp-doc h3,
+.dark .vp-doc strong {
+    color: var(--vp-c-text-1) !important;
+}
+
+.dark .vp-doc p,
+.dark .vp-doc li {
+    color: var(--vp-c-text-2) !important;
+}
+
+.dark .vp-doc blockquote {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--vp-c-text-2) !important;
 }
 
