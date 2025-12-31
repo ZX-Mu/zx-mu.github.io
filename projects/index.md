@@ -18,6 +18,14 @@ layout: page
       icon="👾"
       tag="工具"
     />
+    <ProjectCard
+      title="数独小游戏"
+      description="摸鱼时间玩一下？"
+      link="https://github.com/ZX-Mu/sudoku"
+      preview="https://zx-mu.github.io/sudoku"
+      icon="🥸"
+      tag="工具"
+    />
     
   </div>
 </div>
