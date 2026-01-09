@@ -26,6 +26,14 @@ layout: page
       icon="🥸"
       tag="工具"
     />
+    <ProjectCard
+      title="3D粒子手势控制"
+      description="简单跟风一下"
+      link="https://github.com/ZX-Mu/Ethereal-Particles"
+      preview="https://zx-mu.github.io/Ethereal-Particles"
+      icon="🪐"
+      tag="工具"
+    />
     
   </div>
 </div>
