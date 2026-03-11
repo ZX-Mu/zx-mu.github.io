@@ -55,6 +55,9 @@ layout: page
   text-align: center;
   border: 1px solid rgba(255, 142, 122, 0.1);
   overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .portal-icon-bg {
@@ -74,12 +77,12 @@ layout: page
   padding: 4px 16px !important;
   font-size: 2.2rem !important;
   font-weight: 800 !important;
-  background: linear-gradient(120deg, #ff8e7a 0%, #ffb085 100%);
+  background: linear-gradient(120deg, var(--vp-c-brand-1) 0%, var(--vp-c-brand-2) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline-block;
-  line-height: 1.3; 
+  line-height: 1.3;
   width: auto;
   /* 防止文字被裁剪的关键属性 */
   box-decoration-break: clone;

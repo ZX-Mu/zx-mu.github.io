@@ -8,3 +8,5 @@ vendor
 *.gem
 node_modules
 package-lock.json
+dist
+.kilocode
