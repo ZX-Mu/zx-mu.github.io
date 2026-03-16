@@ -19,7 +19,7 @@ const futureSections = [
 
     <section class="cc-home-layout">
       <section class="cc-home-grid">
-        <article v-for="course in culturalCreativeCourses" :key="course.slug" class="cc-home-card">
+        <a v-for="course in culturalCreativeCourses" :key="course.slug" :href="course.overviewLink" class="cc-home-card">
           <div class="cc-home-card-head">
             <div class="cc-home-card-title">
               <span class="cc-home-card-icon">{{ course.icon }}</span>
@@ -30,11 +30,10 @@ const futureSections = [
                 </h3>
               </div>
             </div>
-            <a :href="course.overviewLink" class="cc-home-primary">马上进入</a>
           </div>
 
           <p class="cc-home-intro">{{ course.intro }}</p>
-        </article>
+        </a>
 
         <article v-for="item in futureSections" :key="item.title" class="cc-home-future-card">
           <div class="cc-home-future-head">
@@ -116,6 +115,7 @@ const futureSections = [
 
 .cc-home-card,
 .cc-home-future-card {
+  position: relative;
   display: grid;
   gap: 16px;
   padding: 24px;
@@ -123,6 +123,42 @@ const futureSections = [
   border: 1px solid rgba(255, 142, 122, 0.12);
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, var(--vp-c-bg-soft) 100%);
   box-shadow: 0 12px 28px rgba(255, 142, 122, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* 卡片可点击样式 */
+.cc-home-card {
+  cursor: pointer;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* 卡片 Hover 效果 */
+.cc-home-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--vp-c-brand-1);
+  box-shadow:
+    0 16px 40px rgba(255, 142, 122, 0.14),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* 右下角箭头 - 默认隐藏 */
+.cc-home-card::after {
+  content: '→';
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  font-size: 20px;
+  color: var(--vp-c-brand-1);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover 时显示箭头 */
+.cc-home-card:hover::after {
+  opacity: 0.6;
+  transform: translateX(0);
 }
 
 .cc-home-card-head {
@@ -147,20 +183,12 @@ const futureSections = [
   border-radius: 16px;
   background: var(--vp-c-bg);
   font-size: 24px;
+  transition: transform 0.3s ease;
 }
 
-.cc-home-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 40px;
-  padding: 0 16px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--vp-c-brand-1) 0%, var(--vp-c-brand-2) 100%);
-  color: #fff !important;
-  text-decoration: none !important;
-  font-weight: 600;
-  white-space: nowrap;
+/* Icon hover 效果 */
+.cc-home-card:hover .cc-home-card-icon {
+  transform: scale(1.05);
 }
 
 .cc-home-intro {
@@ -207,29 +235,153 @@ const futureSections = [
   border-color: rgba(255, 255, 255, 0.06);
 }
 
+/* 平板和小屏幕 - 单列布局 */
 @media (max-width: 959px) {
   .cc-home-grid {
     grid-template-columns: 1fr;
   }
 }
 
+/* 手机端适配 */
 @media (max-width: 640px) {
   .cc-home {
-    padding-top: 12px;
+    padding: 12px 16px 32px;
+    gap: 20px;
   }
 
-  .cc-home-hero,
-  .cc-home-card,
-  .cc-home-future-card {
-    padding: 20px;
+  .cc-home-hero {
+    padding: 24px 20px;
+    border-radius: 20px;
   }
 
   .cc-home-hero h1 {
-    font-size: 2rem !important;
+    font-size: 1.75rem !important;
+    margin: 8px 0 8px !important;
   }
 
-  .cc-home-card-head {
-    flex-direction: column;
+  .cc-home-hero p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .cc-home-grid {
+    gap: 14px;
+  }
+
+  .cc-home-card,
+  .cc-home-future-card {
+    padding: 18px;
+    border-radius: 16px;
+    gap: 12px;
+  }
+
+  .cc-home-card-icon {
+    width: 42px;
+    height: 42px;
+    font-size: 22px;
+    border-radius: 12px;
+  }
+
+  .cc-home-card h3,
+  .cc-home-future-card h3 {
+    font-size: 1.05rem !important;
+  }
+
+  .cc-home-type-tag {
+    font-size: 11px;
+    padding: 1px 6px;
+  }
+
+  .cc-home-intro {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .cc-home-future-card {
+    min-height: 180px;
+  }
+
+  /* 移除右下角箭头在小屏幕上的显示 */
+  .cc-home-card::after {
+    display: none;
+  }
+}
+
+/* 小尺寸手机适配 */
+@media (max-width: 480px) {
+  .cc-home {
+    padding: 8px 12px 24px;
+    gap: 16px;
+  }
+
+  .cc-home-hero {
+    padding: 20px 16px;
+    border-radius: 16px;
+  }
+
+  .cc-home-hero h1 {
+    font-size: 1.5rem !important;
+  }
+
+  .cc-home-hero p {
+    font-size: 0.9rem;
+  }
+
+  .cc-home-grid {
+    gap: 12px;
+  }
+
+  .cc-home-card,
+  .cc-home-future-card {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .cc-home-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
+    border-radius: 10px;
+  }
+
+  .cc-home-card-title {
+    gap: 12px;
+  }
+
+  .cc-home-card h3,
+  .cc-home-future-card h3 {
+    font-size: 1rem !important;
+  }
+
+  .cc-home-intro {
+    font-size: 0.875rem;
+  }
+
+  .cc-home-future-card {
+    min-height: 160px;
+  }
+}
+
+/* 触摸设备优化 - 禁用 hover 效果 */
+@media (hover: none) and (pointer: coarse) {
+  .cc-home-card:hover {
+    transform: none;
+    border-color: rgba(255, 142, 122, 0.12);
+    box-shadow: 0 12px 28px rgba(255, 142, 122, 0.06);
+  }
+
+  .cc-home-card:hover .cc-home-card-icon {
+    transform: none;
+  }
+
+  .cc-home-card:hover::after {
+    opacity: 0;
+  }
+
+  /* 添加触摸反馈 */
+  .cc-home-card:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 }
 </style>

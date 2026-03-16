@@ -22,6 +22,7 @@ const activePreviewType = ref<PreviewType>('summary')
 const activePreview = shallowRef<Component | null>(null)
 const isPreviewLoading = ref(false)
 const showBackToTop = ref(false)
+const isSidebarOpen = ref(false)
 const chapterModules = import.meta.glob('../*/chapter-*/*.md')
 const fullSummaryModules = import.meta.glob('../*/full-summary.md')
 const overviewModules = import.meta.glob('../*/_index.md')
@@ -157,6 +158,10 @@ async function setActiveFullSummary(options: { updateHash?: boolean } = {}) {
 
 function handleChapterClick(number: number) {
   void setActiveChapter(number)
+  // 在移动端点击章节后关闭侧边栏
+  if (window.innerWidth <= 1100) {
+    isSidebarOpen.value = false
+  }
 }
 
 function handlePreviewTypeChange(type: PreviewType) {
@@ -166,6 +171,14 @@ function handlePreviewTypeChange(type: PreviewType) {
 
   activePreviewType.value = type
   void loadChapterPreview(activeChapterNumber.value)
+}
+
+function toggleSidebar() {
+  isSidebarOpen.value = !isSidebarOpen.value
+}
+
+function closeSidebar() {
+  isSidebarOpen.value = false
 }
 
 function updateBackToTopVisibility() {
@@ -245,11 +258,41 @@ onBeforeUnmount(() => {
   <div v-if="course" class="cc-overview">
     <section class="cc-overview-hero">
       <a href="/garden/cultural-creative/" class="cc-overview-back-link">返回文创首页</a>
-      <h1>{{ course.title }}课程总览</h1>
+      <h1 class="cc-overview-title">{{ course.title }}</h1>
     </section>
 
+    <!-- 移动端目录按钮 -->
+    <button
+      type="button"
+      class="cc-sidebar-toggle"
+      aria-label="打开目录"
+      @click="toggleSidebar"
+    >
+      <span class="cc-sidebar-toggle-icon">☰</span>
+      <span>目录</span>
+    </button>
+
+    <!-- 遮罩层 -->
+    <Transition name="cc-backdrop-fade">
+      <div
+        v-if="isSidebarOpen"
+        class="cc-sidebar-backdrop"
+        @click="closeSidebar"
+      />
+    </Transition>
+
     <section id="chapter-workspace" class="cc-overview-workspace">
-      <aside class="cc-overview-sidebar">
+      <aside class="cc-overview-sidebar" :class="{ 'is-open': isSidebarOpen }">
+        <!-- 移动端关闭按钮 -->
+        <button
+          type="button"
+          class="cc-sidebar-close"
+          aria-label="关闭目录"
+          @click="closeSidebar"
+        >
+          ✕
+        </button>
+
         <section class="cc-overview-top-nav">
           <button
             type="button"
@@ -393,6 +436,21 @@ onBeforeUnmount(() => {
   position: relative;
 }
 
+/* 移动端目录按钮 - 默认隐藏 */
+.cc-sidebar-toggle {
+  display: none;
+}
+
+/* 移动端侧边栏关闭按钮 - 默认隐藏 */
+.cc-sidebar-close {
+  display: none;
+}
+
+/* 遮罩层 - 默认隐藏 */
+.cc-sidebar-backdrop {
+  display: none;
+}
+
 .cc-overview-hero {
   display: grid;
   gap: 8px;
@@ -413,12 +471,15 @@ onBeforeUnmount(() => {
   color: var(--vp-c-brand-1) !important;
 }
 
-.cc-overview-hero h1 {
+.cc-overview-title {
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
-  font-size: 2rem !important;
-  line-height: 1.2;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  line-height: 1.3;
+  color: var(--vp-c-brand-1);
+  letter-spacing: 0.02em;
 }
 
 .cc-overview-workspace {
@@ -432,6 +493,7 @@ onBeforeUnmount(() => {
   min-width: 320px;
   max-width: 440px;
   display: grid;
+  grid-template-rows: auto auto;
   gap: 18px;
   padding: 24px;
   border-radius: 24px;
@@ -440,7 +502,8 @@ onBeforeUnmount(() => {
 }
 
 .cc-overview-top-nav {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 8px;
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(255, 142, 122, 0.1);
@@ -448,9 +511,10 @@ onBeforeUnmount(() => {
 
 .cc-overview-top-link {
   width: 100%;
-  display: inline-flex;
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
-  min-height: 42px;
+  height: 42px;
   padding: 0 14px;
   border: 1px solid rgba(255, 142, 122, 0.1);
   border-radius: 14px;
@@ -478,16 +542,19 @@ onBeforeUnmount(() => {
 
 .cc-overview-sidebar-groups {
   display: grid;
+  grid-auto-rows: auto;
   gap: 18px;
 }
 
 .cc-overview-module {
   display: grid;
+  grid-template-rows: auto auto;
   gap: 10px;
 }
 
 .cc-overview-module-header {
   display: grid;
+  grid-template-rows: auto auto;
   gap: 4px;
 }
 
@@ -505,6 +572,7 @@ onBeforeUnmount(() => {
 
 .cc-overview-chapter-list {
   display: grid;
+  grid-auto-rows: auto;
   gap: 8px;
 }
 
@@ -786,15 +854,121 @@ onBeforeUnmount(() => {
   background: rgba(240, 240, 240, 0.22);
 }
 
+.dark .cc-sidebar-close {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--vp-c-text-1);
+}
+
+.dark .cc-sidebar-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* 平板和中等屏幕 - 抽屉模式 */
 @media (max-width: 1100px) {
+  /* 显示目录按钮 */
+  .cc-sidebar-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 142, 122, 0.2);
+    border-radius: 12px;
+    background: rgba(255, 142, 122, 0.08);
+    color: var(--vp-c-brand-1);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .cc-sidebar-toggle:hover {
+    background: rgba(255, 142, 122, 0.12);
+    border-color: rgba(255, 142, 122, 0.3);
+  }
+
+  .cc-sidebar-toggle:active {
+    transform: scale(0.98);
+  }
+
+  .cc-sidebar-toggle-icon {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  /* 遮罩层 */
+  .cc-sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 49;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .cc-backdrop-fade-enter-active,
+  .cc-backdrop-fade-leave-active {
+    transition: opacity 0.3s ease;
+  }
+
+  .cc-backdrop-fade-enter-from,
+  .cc-backdrop-fade-leave-to {
+    opacity: 0;
+  }
+
+  /* 侧边栏抽屉样式 */
   .cc-overview-workspace {
     flex-direction: column;
   }
 
   .cc-overview-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 50;
+    flex: none;
     min-width: 0;
-    max-width: none;
-    width: 100%;
+    max-width: 85%;
+    width: 320px;
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    border-radius: 0 18px 18px 0;
+  }
+
+  .cc-overview-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  /* 关闭按钮 */
+  .cc-sidebar-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--vp-c-text-1);
+    font-size: 18px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .cc-sidebar-close:hover {
+    background: rgba(0, 0, 0, 0.1);
   }
 
   .cc-overview-preview {
@@ -802,27 +976,111 @@ onBeforeUnmount(() => {
   }
 }
 
+/* 手机端适配 */
 @media (max-width: 640px) {
   .cc-overview {
-    padding: 16px 16px 40px;
+    padding: 12px 16px 36px;
+    gap: 16px;
   }
 
-  .cc-overview-hero h1 {
-    font-size: 1.5rem !important;
+  .cc-overview-hero {
+    gap: 4px;
+    margin-bottom: 4px;
   }
 
-  .cc-overview-sidebar,
-  .cc-preview-body {
-    padding: 20px;
-    border-radius: 22px;
+  .cc-overview-back-link {
+    font-size: 12px;
+  }
+
+  .cc-overview-title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+  }
+
+  .cc-overview-sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+    border-radius: 18px;
+    gap: 10px;
+  }
+
+  .cc-overview-top-nav {
+    gap: 8px;
+    padding-bottom: 12px;
+  }
+
+  .cc-overview-top-link {
+    flex-shrink: 0;
+    height: 38px;
+    padding: 0 12px;
+    font-size: 13px;
+    border-radius: 12px;
+  }
+
+  .cc-overview-sidebar-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .cc-overview-module {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cc-overview-module-range {
+    font-size: 11px;
+  }
+
+  .cc-overview-module-header h3 {
+    font-size: 0.95rem !important;
+  }
+
+  .cc-overview-chapter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cc-overview-chapter-row {
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+
+  .cc-chapter-num {
+    font-size: 11px;
+  }
+
+  .cc-chapter-title {
+    font-size: 13px;
+    line-height: 1.5;
   }
 
   .cc-preview-head {
     padding: 0 0 12px;
   }
 
+  .cc-preview-kicker {
+    font-size: 11px;
+    margin: 0 0 4px;
+  }
+
   .cc-preview-title-row {
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .cc-preview-title-row h2 {
+    font-size: 1.2rem !important;
+  }
+
+  .cc-preview-meta {
+    font-size: 12px;
+    margin: 6px 0 0;
   }
 
   .cc-preview-actions {
@@ -830,10 +1088,150 @@ onBeforeUnmount(() => {
     flex-wrap: wrap;
   }
 
+  .cc-preview-toggle {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 11px;
+    border-radius: 8px;
+  }
+
+  .cc-preview-body {
+    padding: 20px 18px;
+    border-radius: 18px;
+  }
+
+  .cc-preview-state {
+    min-height: 200px;
+    font-size: 13px;
+  }
+
   .cc-back-to-top {
     right: 16px;
-    bottom: 18px;
-    padding: 10px 14px;
+    bottom: 20px;
+    padding: 9px 14px;
+    font-size: 11px;
+  }
+}
+
+/* 小尺寸手机适配 */
+@media (max-width: 480px) {
+  .cc-overview {
+    padding: 8px 12px 28px;
+    gap: 16px;
+  }
+
+  .cc-overview-hero h1 {
+    font-size: 1.3rem !important;
+  }
+
+  .cc-overview-sidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-radius: 0 16px 16px 0;
+    gap: 8px;
+  }
+
+  .cc-overview-top-nav {
+    gap: 8px;
+    padding-bottom: 10px;
+  }
+
+  .cc-overview-top-link {
+    flex-shrink: 0;
+    height: 36px;
+    padding: 0 10px;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+
+  .cc-overview-sidebar-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cc-overview-module {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .cc-overview-chapter-row {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 10px;
+  }
+
+  .cc-chapter-num {
+    font-size: 10px;
+  }
+
+  .cc-chapter-title {
+    font-size: 12px;
+  }
+
+  .cc-preview-title-row h2 {
+    font-size: 1.1rem !important;
+  }
+
+  .cc-preview-body {
+    padding: 16px 14px;
+    border-radius: 16px;
+  }
+
+  .cc-preview-state {
+    min-height: 160px;
+    font-size: 12px;
+  }
+
+  .cc-back-to-top {
+    right: 12px;
+    bottom: 16px;
+    padding: 8px 12px;
+    font-size: 10px;
+  }
+}
+
+/* 触摸设备优化 - 禁用 hover 效果 */
+@media (hover: none) and (pointer: coarse) {
+  .cc-overview-back-link:hover {
+    color: var(--vp-c-text-2) !important;
+  }
+
+  .cc-overview-top-link:hover {
+    border-color: rgba(255, 142, 122, 0.1);
+    color: var(--vp-c-text-1);
+  }
+
+  .cc-overview-chapter-row:hover {
+    transform: none;
+    border-color: rgba(255, 142, 122, 0.1);
+  }
+
+  .cc-preview-toggle:hover {
+    background: transparent;
+    border-color: rgba(255, 142, 122, 0.14);
+    color: var(--vp-c-text-2);
+  }
+
+  .cc-back-to-top:hover {
+    background: rgba(60, 60, 60, 0.78);
+    transform: none;
+  }
+
+  /* 添加触摸反馈 */
+  .cc-overview-top-link:active,
+  .cc-overview-chapter-row:active,
+  .cc-preview-toggle:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  .cc-back-to-top:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
   }
 }
 </style>
